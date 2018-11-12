@@ -1,5 +1,20 @@
 package articles
 
+const (
+	// ErrNotFound means that the article could not be found in the reposutory
+	ErrNotFound = RepoErr("Could not found the article")
+
+	// ErrAlreadyExists means that the article exists in the repository
+	ErrAlreadyExists = RepoErr("Article already exists")
+)
+
+// RepoErr are errors that can happen when using the articles repository
+type RepoErr string
+
+func (e RepoErr) Error() string {
+	return string(e)
+}
+
 // Article represents a single article
 type Article struct {
 	Code        string
@@ -10,13 +25,29 @@ type Article struct {
 }
 
 // Articles is the mocked storage for articles
-type Articles []Article
+type Articles map[string]Article
 
-// Save saves an article in permanent storage
-func (a *Article) Save() error {
+// Add saves a new article in permanent storage
+func (repo Articles) Add(a Article) error {
+	_, err := repo.GetByCode(a.Code)
+
+	switch err {
+	case ErrNotFound:
+		repo[a.Code] = a
+	case nil:
+		return ErrAlreadyExists
+	default:
+		return err
+	}
+
 	return nil
 }
 
-func main() {
-
+// GetByCode retrieves an article searching by its code
+func (repo Articles) GetByCode(code string) (Article, error) {
+	article, ok := repo[code]
+	if !ok {
+		return Article{}, ErrNotFound
+	}
+	return article, nil
 }
