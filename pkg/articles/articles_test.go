@@ -11,6 +11,53 @@ func TestArticlesAdd(t *testing.T) {
 		Price:    2168.00,
 	}
 
+	var articlesTests = []struct {
+		desc    string
+		article Article
+		want    error
+	}{
+		{desc: "Valid article",
+			article: Article{
+				Code:     "P1101216",
+				Name:     "N4-MPXH",
+				Category: "Centrales",
+				Price:    2168.00},
+			want: nil,
+		},
+		{desc: "Article without code",
+			article: Article{
+				Name:     "N4-MPXH",
+				Category: "Centrales",
+				Price:    2168.00},
+			want: ErrNoCode,
+		},
+		{desc: "Article without name",
+			article: Article{
+				Code:     "P1101216",
+				Category: "Centrales",
+				Price:    2168.00},
+			want: ErrNoName,
+		},
+		{desc: "Article without category",
+			article: Article{
+				Code:  "P1101216",
+				Name:  "N4-MPXH",
+				Price: 2168.00},
+			want: ErrNoCategory,
+		},
+	}
+
+	repo := Articles{}
+
+	for _, tt := range articlesTests {
+		t.Run(tt.desc, func(t *testing.T) {
+			err := repo.Add(tt.article)
+			if err != tt.want {
+				t.Errorf("got: %v, want: %v", err, tt.want)
+			}
+		})
+	}
+
 	t.Run("New article", func(t *testing.T) {
 		repo := Articles{}
 		err := repo.Add(article)

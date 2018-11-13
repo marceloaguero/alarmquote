@@ -6,6 +6,12 @@ const (
 
 	// ErrAlreadyExists means that the article exists in the repository
 	ErrAlreadyExists = RepoErr("Article already exists")
+
+	ErrNoCode = RepoErr("Article has no code")
+
+	ErrNoName = RepoErr("Article has no name")
+
+	ErrNoCategory = RepoErr("Article has no category")
 )
 
 // RepoErr are errors that can happen when using the articles repository
@@ -29,6 +35,18 @@ type Articles map[string]Article
 
 // Add saves a new article in permanent storage
 func (repo Articles) Add(a Article) error {
+	if a.Code == "" {
+		return ErrNoCode
+	}
+
+	if a.Name == "" {
+		return ErrNoName
+	}
+
+	if a.Category == "" {
+		return ErrNoCategory
+	}
+
 	_, err := repo.GetByCode(a.Code)
 
 	switch err {
