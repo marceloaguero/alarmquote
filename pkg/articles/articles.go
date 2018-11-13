@@ -7,10 +7,13 @@ const (
 	// ErrAlreadyExists means that the article exists in the repository
 	ErrAlreadyExists = RepoErr("Article already exists")
 
+	// ErrNoCode means that the article hasn't code
 	ErrNoCode = RepoErr("Article has no code")
 
+	// ErrNoName means that the article hasn't name
 	ErrNoName = RepoErr("Article has no name")
 
+	// ErrNoCategory means that the article hasn't category
 	ErrNoCategory = RepoErr("Article has no category")
 )
 
