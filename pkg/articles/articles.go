@@ -1,38 +1,5 @@
 package articles
 
-const (
-	// ErrNotFound means that the article could not be found in the reposutory
-	ErrNotFound = RepoErr("Could not found the article")
-
-	// ErrAlreadyExists means that the article exists in the repository
-	ErrAlreadyExists = RepoErr("Article already exists")
-
-	// ErrNoCode means that the article hasn't code
-	ErrNoCode = RepoErr("Article has no code")
-
-	// ErrNoName means that the article hasn't name
-	ErrNoName = RepoErr("Article has no name")
-
-	// ErrNoCategory means that the article hasn't category
-	ErrNoCategory = RepoErr("Article has no category")
-)
-
-// RepoErr are errors that can happen when using the articles repository
-type RepoErr string
-
-func (e RepoErr) Error() string {
-	return string(e)
-}
-
-// Article represents a single article
-type Article struct {
-	Code        string
-	Name        string
-	Description string
-	Category    string
-	Price       float64
-}
-
 // Articles is the mocked storage for articles
 type Articles map[string]Article
 
