@@ -11,16 +11,16 @@ const (
 	ErrArticleNotFound = Error("article not found")
 
 	// ErrArticleExists means that the article exists in the repository
-	ErrArticleExists = RepoErr("article already exists")
+	ErrArticleExists = Error("article already exists")
 
 	// ErrArticleIDRequired means that article require an ID
-	ErrArticleIDRequired = RepoErr("article id required")
+	ErrArticleIDRequired = Error("article id required")
 
 	// ErrArticleNameRequired means that article require a name
-	ErrArticleNameRequired = RepoErr("article name required")
+	ErrArticleNameRequired = Error("article name required")
 
 	// ErrArticleCategoryRequired means that the article require a category
-	ErrArticleCategoryRequired = RepoErr("article category required")
+	ErrArticleCategoryRequired = Error("article category required")
 )
 
 // Error represents an domain error
