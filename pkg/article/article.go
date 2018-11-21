@@ -1,4 +1,4 @@
-package articles
+package article
 
 // Articles is the mocked storage for articles
 type Articles map[string]Article
