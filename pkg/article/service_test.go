@@ -2,86 +2,106 @@ package article
 
 import (
 	"testing"
+
+	"github.com/marceloaguero/alarmquote"
 )
 
-func TestArticleServiceAdd(t *testing.T) {
-	article := Article{Code: "P1101216",
-		Name:     "N4-MPXH",
-		Category: "Centrales",
-		Price:    2168.00,
-	}
+func TestAdd(t *testing.T) {
+	repo := newMockRepo()
+	s := NewService(repo)
 
 	var articlesTests = []struct {
 		desc    string
-		article Article
+		article alarmquote.Article
 		want    error
 	}{
 		{desc: "Valid article",
-			article: Article{
-				Code:     "P1101216",
+			article: alarmquote.Article{
+				ID:       "P1101216",
 				Name:     "N4-MPXH",
 				Category: "Centrales",
 				Price:    2168.00},
 			want: nil,
 		},
-		{desc: "Article without code",
-			article: Article{
+		{desc: "Article without ID",
+			article: alarmquote.Article{
 				Name:     "N4-MPXH",
 				Category: "Centrales",
 				Price:    2168.00},
-			want: ErrNoCode,
+			want: alarmquote.ErrArticleIDRequired,
 		},
 		{desc: "Article without name",
-			article: Article{
-				Code:     "P1101216",
+			article: alarmquote.Article{
+				ID:       "P1101216",
 				Category: "Centrales",
 				Price:    2168.00},
-			want: ErrNoName,
+			want: alarmquote.ErrArticleNameRequired,
 		},
 		{desc: "Article without category",
-			article: Article{
-				Code:  "P1101216",
+			article: alarmquote.Article{
+				ID:    "P1101216",
 				Name:  "N4-MPXH",
 				Price: 2168.00},
-			want: ErrNoCategory,
+			want: alarmquote.ErrArticleCategoryRequired,
 		},
 	}
 
-	repo := Articles{}
-
 	for _, tt := range articlesTests {
 		t.Run(tt.desc, func(t *testing.T) {
-			err := repo.Add(tt.article)
+			err := s.Add(tt.article)
 			if err != tt.want {
 				t.Errorf("got: %v, want: %v", err, tt.want)
 			}
 		})
 	}
 
-	t.Run("New article", func(t *testing.T) {
-		repo := Articles{}
-		err := repo.Add(article)
-		if err != nil {
-			t.Errorf("repo.Add should not return an error, got: %v", err)
-		}
-
-		// Retrieve article to verify if it was saved
-		article, err = repo.GetByCode("P1101216")
-		if err != nil {
-			t.Errorf("GetByCode should not retrieve an error, got: %v", err)
-		}
-		if article.Code != "P1101216" {
-			t.Errorf("GetByCode, want: '%s', got: '%s'", "P1101216", article.Code)
-		}
-	})
-
 	t.Run("Existing article", func(t *testing.T) {
-		repo := Articles{}
-		a := Article{Code: "P1101216"}
-		repo["P1101216"] = a
-		err := repo.Add(a)
-		if err == nil {
-			t.Errorf("Adding an existing article should retrieve an error")
+		repo := newMockRepo()
+		s := NewService(repo)
+
+		a := alarmquote.Article{
+			ID:       "P1101216",
+			Name:     "N4-MPXH",
+			Category: "Centrales",
+			Price:    2168.00,
+		}
+
+		// Add the article. This should be OK
+		err := s.Add(a)
+		if err != nil {
+			t.Errorf("Adding a new article should NOT retrieve an error")
+		}
+
+		// Add the article again. This shouldn't be allowed
+		err = s.Add(a)
+		want := alarmquote.ErrArticleExists
+		if err != want {
+			t.Errorf("got: %v, want: %v", err, want)
 		}
 	})
+
+}
+
+type mockRepo struct {
+	articles map[alarmquote.ArticleID]alarmquote.Article
+}
+
+func newMockRepo() *mockRepo {
+	return &mockRepo{
+		articles: map[alarmquote.ArticleID]alarmquote.Article{},
+	}
+}
+
+func (r *mockRepo) Insert(a alarmquote.Article) error {
+	r.articles[a.ID] = a
+	return nil
+}
+
+func (r *mockRepo) Retrieve(id alarmquote.ArticleID) (*alarmquote.Article, error) {
+	article, ok := r.articles[id]
+	if !ok {
+		return nil, alarmquote.ErrArticleNotFound
+	}
+
+	return &article, nil
 }

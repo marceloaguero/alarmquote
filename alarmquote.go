@@ -17,7 +17,7 @@ type Article struct {
 // ArticleService represents a service for managing articles
 type ArticleService interface {
 	GetByID(id ArticleID) (*Article, error)
-	Add(a *Article) error
+	Add(a Article) error
 }
 
 // RepoClient manages a client connection to the repository
