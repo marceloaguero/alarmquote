@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package alarmquote;
+
+message Article {
+    string ID = 1;
+    string Name = 2;
+    string Description = 3;
+    string Category = 4;
+    double Price = 5;
+}
