@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestArticlesAdd(t *testing.T) {
+func TestArticleServiceAdd(t *testing.T) {
 	article := Article{Code: "P1101216",
 		Name:     "N4-MPXH",
 		Category: "Centrales",

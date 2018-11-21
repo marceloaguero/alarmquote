@@ -1,5 +1,6 @@
 package article
 
+/*
 // Articles is the mocked storage for articles
 type Articles map[string]Article
 
@@ -39,3 +40,4 @@ func (repo Articles) GetByCode(code string) (Article, error) {
 	}
 	return article, nil
 }
+*/
