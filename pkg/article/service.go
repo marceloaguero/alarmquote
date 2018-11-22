@@ -68,6 +68,10 @@ func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 		return alarmquote.ErrArticleIDRequired
 	}
 
+	if id != a.ID {
+		return alarmquote.ErrChangeIDForbidden
+	}
+
 	if a.Name == "" {
 		return alarmquote.ErrArticleNameRequired
 	}

@@ -131,13 +131,14 @@ func TestEdit(t *testing.T) {
 				Price:    2168.00},
 			want: alarmquote.ErrArticleNameRequired,
 		},
-		{desc: "Article without category",
+		{desc: "Try to change ID",
 			id: "P1101216",
 			article: alarmquote.Article{
-				ID:    "P1101216",
-				Name:  "N4-MPXH",
-				Price: 2168.00},
-			want: alarmquote.ErrArticleCategoryRequired,
+				ID:       "Changed",
+				Name:     "N4-MPXH",
+				Category: "Centrales",
+				Price:    2168.00},
+			want: alarmquote.ErrChangeIDForbidden,
 		},
 	}
 

@@ -25,4 +25,7 @@ var (
 
 	// ErrArticleCategoryRequired means that the article require a category
 	ErrArticleCategoryRequired = errors.New("article category required")
+
+	// ErrChangeIDForbidden means that the article ID modification is not allowed
+	ErrChangeIDForbidden = errors.New("article ID edition forbidden")
 )
