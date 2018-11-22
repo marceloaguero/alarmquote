@@ -34,16 +34,8 @@ func (s *Service) GetByID(id alarmquote.ArticleID) (*alarmquote.Article, error) 
 
 // Add adds an article to the service repository
 func (s *Service) Add(a alarmquote.Article) error {
-	if a.ID == "" {
-		return alarmquote.ErrArticleIDRequired
-	}
-
-	if a.Name == "" {
-		return alarmquote.ErrArticleNameRequired
-	}
-
-	if a.Category == "" {
-		return alarmquote.ErrArticleCategoryRequired
+	if err := Validate(a); err != nil {
+		return err
 	}
 
 	_, err := s.GetByID(a.ID)
@@ -63,21 +55,14 @@ func (s *Service) Add(a alarmquote.Article) error {
 	return nil
 }
 
+// Edit permits article's modifications
 func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
-	if a.ID == "" {
-		return alarmquote.ErrArticleIDRequired
+	if err := Validate(a); err != nil {
+		return err
 	}
 
 	if id != a.ID {
 		return alarmquote.ErrChangeIDForbidden
-	}
-
-	if a.Name == "" {
-		return alarmquote.ErrArticleNameRequired
-	}
-
-	if a.Category == "" {
-		return alarmquote.ErrArticleCategoryRequired
 	}
 
 	if _, err := s.GetByID(id); err != nil {
@@ -86,6 +71,22 @@ func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 
 	if err := s.repo.Modify(id, a); err != nil {
 		return errors.Wrap(err, "error editing an article")
+	}
+
+	return nil
+}
+
+func Validate(a alarmquote.Article) error {
+	if a.ID == "" {
+		return alarmquote.ErrArticleIDRequired
+	}
+
+	if a.Name == "" {
+		return alarmquote.ErrArticleNameRequired
+	}
+
+	if a.Category == "" {
+		return alarmquote.ErrArticleCategoryRequired
 	}
 
 	return nil
