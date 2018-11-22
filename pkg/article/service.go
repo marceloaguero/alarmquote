@@ -34,7 +34,7 @@ func (s *Service) GetByID(id alarmquote.ArticleID) (*alarmquote.Article, error) 
 
 // Add adds an article to the service repository
 func (s *Service) Add(a alarmquote.Article) error {
-	if err := Validate(a); err != nil {
+	if err := validate(a); err != nil {
 		return err
 	}
 
@@ -57,7 +57,7 @@ func (s *Service) Add(a alarmquote.Article) error {
 
 // Edit permits article's modifications
 func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
-	if err := Validate(a); err != nil {
+	if err := validate(a); err != nil {
 		return err
 	}
 
@@ -76,7 +76,7 @@ func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 	return nil
 }
 
-func Validate(a alarmquote.Article) error {
+func validate(a alarmquote.Article) error {
 	if a.ID == "" {
 		return alarmquote.ErrArticleIDRequired
 	}
