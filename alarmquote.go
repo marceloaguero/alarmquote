@@ -18,4 +18,5 @@ type Article struct {
 type ArticleService interface {
 	GetByID(id ArticleID) (*Article, error)
 	Add(a Article) error
+	Edit(id ArticleID, a Article) error
 }

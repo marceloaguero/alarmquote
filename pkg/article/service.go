@@ -15,8 +15,9 @@ type Service struct {
 
 // Repository models the concrete data repository (memory, cache, db, etc)
 type Repository interface {
-	Insert(a alarmquote.Article) error
 	Retrieve(id alarmquote.ArticleID) (*alarmquote.Article, error)
+	Insert(a alarmquote.Article) error
+	Modify(id alarmquote.ArticleID, a alarmquote.Article) error
 }
 
 // NewService returns a usable service, wrapping a repository.
@@ -24,6 +25,11 @@ func NewService(r Repository) *Service {
 	return &Service{
 		repo: r,
 	}
+}
+
+// GetByID retrieve an article from the repository, given it's ID
+func (s *Service) GetByID(id alarmquote.ArticleID) (*alarmquote.Article, error) {
+	return s.repo.Retrieve(id)
 }
 
 // Add adds an article to the service repository
@@ -57,7 +63,26 @@ func (s *Service) Add(a alarmquote.Article) error {
 	return nil
 }
 
-// GetByID retrieve an article from the repository, given it's ID
-func (s *Service) GetByID(id alarmquote.ArticleID) (*alarmquote.Article, error) {
-	return s.repo.Retrieve(id)
+func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
+	if a.ID == "" {
+		return alarmquote.ErrArticleIDRequired
+	}
+
+	if a.Name == "" {
+		return alarmquote.ErrArticleNameRequired
+	}
+
+	if a.Category == "" {
+		return alarmquote.ErrArticleCategoryRequired
+	}
+
+	if _, err := s.GetByID(id); err != nil {
+		return errors.Wrap(err, "error retrieving when editing an article")
+	}
+
+	if err := s.repo.Modify(id, a); err != nil {
+		return errors.Wrap(err, "error editing an article")
+	}
+
+	return nil
 }
