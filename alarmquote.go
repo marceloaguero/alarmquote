@@ -19,8 +19,3 @@ type ArticleService interface {
 	GetByID(id ArticleID) (*Article, error)
 	Add(a Article) error
 }
-
-// RepoClient manages a client connection to the repository
-type RepoClient interface {
-	ArticleService() ArticleService
-}
