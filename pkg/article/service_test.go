@@ -69,7 +69,7 @@ func TestAdd(t *testing.T) {
 		// Add the article. This should be OK
 		err := s.Add(a)
 		if err != nil {
-			t.Errorf("Adding a new article should NOT retrieve an error")
+			t.Errorf("Adding a valid new article should NOT retrieve an error")
 		}
 
 		// Add the article again. This shouldn't be allowed

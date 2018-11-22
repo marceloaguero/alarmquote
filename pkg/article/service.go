@@ -2,6 +2,7 @@ package article
 
 import (
 	"github.com/marceloaguero/alarmquote"
+	"github.com/pkg/errors"
 )
 
 // Ensure ArticleService implements alarmquote.ArticleService
@@ -42,9 +43,13 @@ func (s *Service) Add(a alarmquote.Article) error {
 	_, err := s.GetByID(a.ID)
 	switch err {
 	case alarmquote.ErrArticleNotFound:
-		s.repo.Insert(a)
+		if err := s.repo.Insert(a); err != nil {
+			return errors.Wrap(err, "error adding a new article")
+		}
+
 	case nil:
 		return alarmquote.ErrArticleExists
+
 	default:
 		return err
 	}
@@ -54,6 +59,5 @@ func (s *Service) Add(a alarmquote.Article) error {
 
 // GetByID retrieve an article from the repository, given it's ID
 func (s *Service) GetByID(id alarmquote.ArticleID) (*alarmquote.Article, error) {
-	a, err := s.repo.Retrieve(id)
-	return a, err
+	return s.repo.Retrieve(id)
 }
