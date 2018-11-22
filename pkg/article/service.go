@@ -76,6 +76,7 @@ func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 	return nil
 }
 
+// validate performs basic article validation
 func validate(a alarmquote.Article) error {
 	if a.ID == "" {
 		return alarmquote.ErrArticleIDRequired
