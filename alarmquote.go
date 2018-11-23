@@ -16,7 +16,7 @@ type Article struct {
 
 // ArticleService represents a service for managing articles
 type ArticleService interface {
-	GetByID(id ArticleID) (*Article, error)
+	Article(id ArticleID) (*Article, error)
 	Add(a Article) error
 	Edit(id ArticleID, a Article) error
 }

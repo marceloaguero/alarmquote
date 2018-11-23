@@ -165,7 +165,7 @@ func TestEdit(t *testing.T) {
 			t.Errorf("Editing price should NOT retrieve an error")
 		}
 
-		edited, err := s.GetByID(a.ID)
+		edited, err := s.Article(a.ID)
 		if a.Price != edited.Price {
 			t.Errorf("got: %f, want: %f", edited.Price, a.Price)
 		}

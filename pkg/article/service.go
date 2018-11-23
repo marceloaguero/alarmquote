@@ -27,8 +27,8 @@ func NewService(r Repository) *Service {
 	}
 }
 
-// GetByID retrieve an article from the repository, given it's ID
-func (s *Service) GetByID(id alarmquote.ArticleID) (*alarmquote.Article, error) {
+// Article retrieve an article from the repository, given it's ID
+func (s *Service) Article(id alarmquote.ArticleID) (*alarmquote.Article, error) {
 	return s.repo.Retrieve(id)
 }
 
@@ -38,7 +38,7 @@ func (s *Service) Add(a alarmquote.Article) error {
 		return err
 	}
 
-	_, err := s.GetByID(a.ID)
+	_, err := s.Article(a.ID)
 	switch err {
 	case alarmquote.ErrArticleNotFound:
 		if err := s.repo.Insert(a); err != nil {
@@ -65,7 +65,7 @@ func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 		return alarmquote.ErrChangeIDForbidden
 	}
 
-	if _, err := s.GetByID(id); err != nil {
+	if _, err := s.Article(id); err != nil {
 		return errors.Wrap(err, "error retrieving when editing an article")
 	}
 
