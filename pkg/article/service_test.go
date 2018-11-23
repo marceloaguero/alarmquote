@@ -66,13 +66,13 @@ func TestAdd(t *testing.T) {
 			Price:    2168.00,
 		}
 
-		// Add the article. This should be OK
+		// Add the article. This should be OK.
 		err := s.Add(a)
 		if err != nil {
 			t.Errorf("Adding a valid new article should NOT retrieve an error")
 		}
 
-		// Add the article again. This shouldn't be allowed
+		// Add the article again. This shouldn't be allowed.
 		err = s.Add(a)
 		want := alarmquote.ErrArticleExists
 		if err != want {
@@ -93,13 +93,13 @@ func TestEdit(t *testing.T) {
 		Price:    2168.00,
 	}
 
-	// Add a new article. This should be OK
+	// Add a new article. This should be OK.
 	err := s.Add(a)
 	if err != nil {
 		t.Errorf("Adding a valid new article should NOT retrieve an error")
 	}
 
-	// Test cases
+	// Test cases.
 	var articlesTests = []struct {
 		desc    string
 		id      alarmquote.ArticleID
@@ -151,7 +151,7 @@ func TestEdit(t *testing.T) {
 		})
 	}
 
-	// Test a valid edition (price)
+	// Test a valid edition (price).
 	a = alarmquote.Article{
 		ID:       "P1101216",
 		Name:     "N4-MPXH",

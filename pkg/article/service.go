@@ -5,15 +5,15 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Ensure ArticleService implements alarmquote.ArticleService
+// Ensure ArticleService implements alarmquote.ArticleService.
 var _ alarmquote.ArticleService = &Service{}
 
-// Service provides the article service
+// Service provides the article service.
 type Service struct {
 	repo Repository
 }
 
-// Repository models the concrete data repository (memory, cache, db, etc)
+// Repository models the concrete data repository (memory, cache, db, etc).
 type Repository interface {
 	Retrieve(id alarmquote.ArticleID) (*alarmquote.Article, error)
 	Insert(a alarmquote.Article) error
@@ -27,12 +27,12 @@ func NewService(r Repository) *Service {
 	}
 }
 
-// Article retrieve an article from the repository, given it's ID
+// Article retrieve an article from the repository, given it's ID.
 func (s *Service) Article(id alarmquote.ArticleID) (*alarmquote.Article, error) {
 	return s.repo.Retrieve(id)
 }
 
-// Add adds an article to the service repository
+// Add adds an article to the service repository.
 func (s *Service) Add(a alarmquote.Article) error {
 	if err := validate(a); err != nil {
 		return err
@@ -55,7 +55,7 @@ func (s *Service) Add(a alarmquote.Article) error {
 	return nil
 }
 
-// Edit permits article's modifications
+// Edit permits article's modifications.
 func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 	if err := validate(a); err != nil {
 		return err
@@ -76,7 +76,7 @@ func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 	return nil
 }
 
-// validate performs basic article validation
+// validate performs basic article validation.
 func validate(a alarmquote.Article) error {
 	if a.ID == "" {
 		return alarmquote.ErrArticleIDRequired
