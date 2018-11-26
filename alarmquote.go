@@ -19,4 +19,5 @@ type ArticleService interface {
 	Article(id ArticleID) (*Article, error)
 	Add(a Article) error
 	Edit(id ArticleID, a Article) error
+	Delete(id ArticleID) error
 }

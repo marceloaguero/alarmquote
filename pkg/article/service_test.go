@@ -172,6 +172,49 @@ func TestEdit(t *testing.T) {
 	})
 }
 
+func TestDelete(t *testing.T) {
+	repo := newMockRepo()
+	s := NewService(repo)
+
+	a := alarmquote.Article{
+		ID:       "P1101216",
+		Name:     "N4-MPXH",
+		Category: "Centrales",
+		Price:    2168.00,
+	}
+
+	// Add a new article. This should be OK.
+	err := s.Add(a)
+	if err != nil {
+		t.Errorf("Adding a valid new article should NOT retrieve an error")
+	}
+
+	// Test cases.
+	var articlesTests = []struct {
+		desc string
+		id   alarmquote.ArticleID
+		want error
+	}{
+		{desc: "Valid deletion",
+			id:   "P1101216",
+			want: nil,
+		},
+		{desc: "Invalid deletion (inexisting article)",
+			id:   "P1101216",
+			want: alarmquote.ErrArticleNotFound,
+		},
+	}
+
+	for _, tt := range articlesTests {
+		t.Run(tt.desc, func(t *testing.T) {
+			err := s.Delete(tt.id)
+			if err != tt.want {
+				t.Errorf("got: %v, want: %v", err, tt.want)
+			}
+		})
+	}
+}
+
 type mockRepo struct {
 	articles map[alarmquote.ArticleID]alarmquote.Article
 }
@@ -198,5 +241,10 @@ func (r *mockRepo) Insert(a alarmquote.Article) error {
 
 func (r *mockRepo) Modify(id alarmquote.ArticleID, a alarmquote.Article) error {
 	r.articles[a.ID] = a
+	return nil
+}
+
+func (r *mockRepo) Delete(id alarmquote.ArticleID) error {
+	delete(r.articles, id)
 	return nil
 }

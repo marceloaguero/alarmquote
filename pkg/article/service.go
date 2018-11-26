@@ -18,6 +18,7 @@ type Repository interface {
 	Retrieve(id alarmquote.ArticleID) (*alarmquote.Article, error)
 	Insert(a alarmquote.Article) error
 	Modify(id alarmquote.ArticleID, a alarmquote.Article) error
+	Delete(id alarmquote.ArticleID) error
 }
 
 // NewService returns a usable service, wrapping a repository.
@@ -71,6 +72,18 @@ func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 
 	if err := s.repo.Modify(id, a); err != nil {
 		return errors.Wrap(err, "error editing an article")
+	}
+
+	return nil
+}
+
+func (s *Service) Delete(id alarmquote.ArticleID) error {
+	if _, err := s.Article(id); err != nil {
+		return alarmquote.ErrArticleNotFound
+	}
+
+	if err := s.repo.Delete(id); err != nil {
+		return errors.Wrap(err, "error deleting an article")
 	}
 
 	return nil
