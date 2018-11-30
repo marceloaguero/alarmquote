@@ -77,6 +77,7 @@ func (s *Service) Edit(id alarmquote.ArticleID, a alarmquote.Article) error {
 	return nil
 }
 
+// Delete deletes an article
 func (s *Service) Delete(id alarmquote.ArticleID) error {
 	if _, err := s.Article(id); err != nil {
 		return alarmquote.ErrArticleNotFound

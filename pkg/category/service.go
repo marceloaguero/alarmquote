@@ -73,6 +73,7 @@ func (s *Service) Edit(n alarmquote.CategoryName, c alarmquote.Category) error {
 	return nil
 }
 
+// Delete deletes a category
 func (s *Service) Delete(n alarmquote.CategoryName) error {
 	if _, err := s.Category(n); err != nil {
 		return alarmquote.ErrCategoryNotFound
