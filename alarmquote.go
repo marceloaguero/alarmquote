@@ -21,3 +21,14 @@ type ArticleService interface {
 	Edit(id ArticleID, a Article) error
 	Delete(id ArticleID) error
 }
+
+type CategoryName string
+
+type Category struct {
+	Name CategoryName
+}
+
+type CategoryService interface {
+	Category(n CategoryName) (*Category, error)
+	// Add(c Category) error
+}

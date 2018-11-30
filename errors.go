@@ -29,3 +29,15 @@ var (
 	// ErrChangeIDForbidden means that the article ID modification is not allowed.
 	ErrChangeIDForbidden = errors.New("article ID edition forbidden")
 )
+
+// Categories errors.
+var (
+	// ErrCategoryNotFound means that the category could not be found in the repository.
+	ErrCategoryNotFound = errors.New("category not found")
+
+	// ErrCategoryExists means that the category exists in the repository.
+	ErrCategoryExists = errors.New("category already exists")
+
+	// ErrCategoryNameRequired means that category require a name.
+	ErrCategoryNameRequired = errors.New("category name required")
+)
