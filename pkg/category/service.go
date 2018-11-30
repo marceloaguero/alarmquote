@@ -17,8 +17,8 @@ type Service struct {
 type Repository interface {
 	Retrieve(n alarmquote.CategoryName) (*alarmquote.Category, error)
 	Insert(c alarmquote.Category) error
-	//	Modify(n alarmquote.CategoryName, c alarmquote.Category) error
-	//	Delete(n alarmquote.CategoryName) error
+	Modify(n alarmquote.CategoryName, c alarmquote.Category) error
+	Delete(n alarmquote.CategoryName) error
 }
 
 // NewService returns a usable service, wrapping a repository.
@@ -51,6 +51,35 @@ func (s *Service) Add(c alarmquote.Category) error {
 
 	default:
 		return err
+	}
+
+	return nil
+}
+
+// Edit permits category's modifications.
+func (s *Service) Edit(n alarmquote.CategoryName, c alarmquote.Category) error {
+	if err := validate(c); err != nil {
+		return err
+	}
+
+	if _, err := s.Category(n); err != nil {
+		return errors.Wrap(err, "error retrieving when editing a category")
+	}
+
+	if err := s.repo.Modify(n, c); err != nil {
+		return errors.Wrap(err, "error editing a category")
+	}
+
+	return nil
+}
+
+func (s *Service) Delete(n alarmquote.CategoryName) error {
+	if _, err := s.Category(n); err != nil {
+		return alarmquote.ErrCategoryNotFound
+	}
+
+	if err := s.repo.Delete(n); err != nil {
+		return errors.Wrap(err, "error deleting a category")
 	}
 
 	return nil

@@ -30,5 +30,7 @@ type Category struct {
 
 type CategoryService interface {
 	Category(n CategoryName) (*Category, error)
-	// Add(c Category) error
+	Add(c Category) error
+	Edit(n CategoryName, c Category) error
+	Delete(n CategoryName) error
 }
