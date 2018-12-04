@@ -22,12 +22,15 @@ type ArticleService interface {
 	Delete(id ArticleID) error
 }
 
+// CategoryName repesents a category's name
 type CategoryName string
 
+// Category represents an article's category
 type Category struct {
 	Name CategoryName
 }
 
+// CategoryService is a service for managing articles' categories
 type CategoryService interface {
 	Category(n CategoryName) (*Category, error)
 	Add(c Category) error
