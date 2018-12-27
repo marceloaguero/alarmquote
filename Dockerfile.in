@@ -18,5 +18,9 @@ MAINTAINER Marcelo Aguero <marceloaguero@gmail.com>
 
 ADD bin/ARG_ARCH/ARG_BIN /ARG_BIN
 
-USER nobody:nobody
+COPY build/passwd /etc/passwd
+COPY build/group /etc/group
+
+USER nobody:nogroup
+
 ENTRYPOINT ["/ARG_BIN"]
