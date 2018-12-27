@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright 2016 The Kubernetes Authors.
 #
@@ -33,6 +33,11 @@ fi
 
 export CGO_ENABLED=0
 export GOARCH="${ARCH}"
+export GO111MODULE=on
+
+if [ ! -f ./go.mod ]; then
+    go mod init
+fi
 
 go install                                                         \
     -installsuffix "static"                                        \
